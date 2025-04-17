@@ -1,0 +1,19 @@
+#tooltip {
+    position: absolute;
+    background: rgba(0,0,0,0.85);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    pointer-events: none;
+    display: none;
+    max-width: 200px;
+    z-index: 10;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+}
+#tooltip img {
+    display: block;
+    margin-top: 5px;
+    max-width: 100%;
+    height: auto;
+}

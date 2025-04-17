@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Effy's Portfolio</title>
+    <link rel="icon" type="image/x-icon" href="/media/favicon/win_xp_favicon.ico">
+    <link rel="stylesheet" href="roomstyle.css">
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    <canvas id="three-canvas"></canvas>
+<div id="tooltip"></div>
+    <audio id="hover-sound" src="hover.mp3" preload="auto"></audio>
+    <audio id="click-sound" src="click.mp3" preload="auto"></audio>
+
+    <!-- Three.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <!-- GLTFLoader for loading GLB models -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+
+    <!-- OrbitControls for camera movement -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+    <!-- External Script -->
+    <script src="scripts.js"></script>
+    <div id="label"></div>
+</body>
+</html>

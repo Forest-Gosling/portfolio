@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homelab</title>
+    <link rel="icon" type="image/x-icon" href="/media/favicon/win_xp_favicon.ico">
+    <link rel="stylesheet" href="style.css">
+
+    <nav id="therack">
+        <a href="index.html" class="topnavlink">Home</a>
+        <a href="about.html" class="topnavlink">About</a>
+        <a href="homelab.html" class="topnavlink">Homelab</a>
+        <a href="hardwaremods.html" class="topnavlink">Hardware Mods</a>
+        <a href="coding.html" class="topnavlink">Coding</a>
+        <a href="contact.html" class="topnavlink">Socials</a>
+    </nav>
+
+</head>
+
+<body>
+
+    <div class="sidenav">
+        <a href="#therack">The Rack</a>
+        <a href="#switch" class="hover-button" data-hover-text="Switch">Switch</a>
+        <a href="#readynas1100" class="hover-button" data-hover-text="ReadyNAS">NAS</a>
+       
+        <a href="#dogs">Dogs</a>
+        <a href="#playlists">Playlists</a>
+        <a href="#contact"></a>
+    </div>
+
+    <main class="mainwside">
+        
+        
+        
+        <section>
+            <h2>Uses</h2>
+            <p>server uses</p>
+            
+            <h2>Network Switch</h2>
+            <p>switch bottleneck for network speed for the whole system</p>
+            
+            <h2>The Rack</h2>
+            <p>rack info</p>
+        </section>
+        
+        </main>
+
+    <br>
+    
+    <div>
+        <h1>Home</h1>
+        <p>This is a paragraph</p>
+    </div>
+    
+        <script>
+    // Select all buttons with the class 'hover-button'
+    const buttons = document.querySelectorAll('.hover-button');
+
+    // Add event listeners to each button
+    buttons.forEach(button => {
+        // Store the original text of each button
+        const originalText = button.innerHTML;
+
+        button.addEventListener('mouseover', function() {
+            // Change the button text to the value stored in the 'data-hover-text' attribute
+            button.innerHTML = button.getAttribute('data-hover-text');
+        });
+
+        button.addEventListener('mouseout', function() {
+            // Restore the original button text
+            button.innerHTML = originalText;
+        });
+    });
+</script>
+
+</body>
+
+<footer>
+    <p>footer</p>
+</footer>
+
+</html>
