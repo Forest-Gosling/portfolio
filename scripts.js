@@ -48,7 +48,7 @@ function init() {
                     interactiveObjects.push(child);
                     objectLinks[child.name] = "coming_soon.html";
                     objectTooltips[child.name] = {
-                        title: "Coming Soon",
+                        title: "Server Rack",
                         description: "Watch This Space.",
                     };
                 }
@@ -68,7 +68,7 @@ function init() {
                     interactiveObjects.push(child);
                     objectLinks[child.name] = "coming_soon.html";  // Link to a new page
                     objectTooltips[child.name] = {
-                        title: "Coming Soon",
+                        title: "Guitar",
                         description: "Watch This Space.",
                     };
                 }
@@ -78,7 +78,7 @@ function init() {
                     interactiveObjects.push(child);
                     objectLinks[child.name] = "coming_soon.html";  // Link to a new page
                     objectTooltips[child.name] = {
-                        title: "Coming Soon",
+                        title: "Soldering Iron",
                         description: "Watch This Space.",
                     };
                 }
@@ -88,7 +88,7 @@ function init() {
                     interactiveObjects.push(child);
                     objectLinks[child.name] = "coming_soon.html";  // Link to a new page
                     objectTooltips[child.name] = {
-                        title: "Coming Soon",
+                        title: "PC",
                         description: "Watch This Space.",
                     };
                 }
@@ -98,7 +98,7 @@ function init() {
                     interactiveObjects.push(child);
                     objectLinks[child.name] = "coming_soon.html";  // Link to a new page
                     objectTooltips[child.name] = {
-                        title: "Coming Soon",
+                        title: "Monitor_1",
                         description: "Watch This Space.",
                     };
                 }
@@ -108,7 +108,7 @@ function init() {
                     interactiveObjects.push(child);
                     objectLinks[child.name] = "coming_soon.html";  // Link to a new page
                     objectTooltips[child.name] = {
-                        title: "Coming Soon",
+                        title: "Monitor_2",
                         description: "Watch This Space.",
                     };
                 }
@@ -118,7 +118,7 @@ function init() {
                     interactiveObjects.push(child);
                     objectLinks[child.name] = "coming_soon.html";  // Link to a new page
                     objectTooltips[child.name] = {
-                        title: "Coming Soon",
+                        title: "Monitor_3",
                         description: "Watch This Space.",
                     };
                 }
