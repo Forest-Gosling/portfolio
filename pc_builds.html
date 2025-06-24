@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Timeline with Navigation</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
+
+    .timeline-container {
+      display: flex;
+      flex-direction: row;
+      height: 100vh;
+      width: 100vw;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    .timeline-item {
+      flex: 0 0 100vw;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+      transition: opacity 0.8s ease, transform 0.8s ease;
+      opacity: 0;
+      transform: translateY(50px);
+    }
+
+    .timeline-item.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .timeline-item img {
+      max-width: 300px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    .timeline-item h2 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .timeline-item p {
+      font-size: 1.2rem;
+      max-width: 600px;
+      text-align: center;
+    }
+
+    /* Progress Dots */
+    .dots-container {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 12px;
+      z-index: 10;
+    }
+
+    .dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background-color: #aaa;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .dot.active {
+      background-color: #333;
+    }
+
+    /* Navigation Arrows */
+    .nav-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2rem;
+      background: rgba(255, 255, 255, 0.7);
+      border: none;
+      border-radius: 50%;
+      padding: 10px 15px;
+      cursor: pointer;
+      z-index: 10;
+      transition: background 0.3s;
+    }
+
+    .nav-arrow:hover {
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    .arrow-left { left: 20px; }
+    .arrow-right { right: 20px; }
+
+    .nav-arrow:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Timeline -->
+  <div class="timeline-container" id="timeline">
+    <div class="timeline-item" style="background-color: #f5f5f5;">
+      <img src="https://via.placeholder.com/300" alt="Event 1">
+      <h2>Event 1</h2>
+      <p>Welcome to the timeline. Scroll or swipe to begin.</p>
+    </div>
+    <div class="timeline-item" style="background-color: #e0f7fa;">
+      <img src="https://via.placeholder.com/300" alt="Event 2">
+      <h2>Event 2</h2>
+      <p>You're moving through history. Keep going!</p>
+    </div>
+    <div class="timeline-item" style="background-color: #fff3e0;">
+      <img src="https://via.placeholder.com/300" alt="Event 3">
+      <h2>Event 3</h2>
+      <p>Each event appears with a little animation.</p>
+    </div>
+    <div class="timeline-item" style="background-color: #e8f5e9;">
+      <img src="https://via.placeholder.com/300" alt="Event 4">
+      <h2>Event 4</h2>
+      <p>This is the final event. You can add more.</p>
+    </div>
+  </div>
+
+  <!-- Navigation Arrows -->
+  <button class="nav-arrow arrow-left" id="prevBtn">&#8592;</button>
+  <button class="nav-arrow arrow-right" id="nextBtn">&#8594;</button>
+
+  <!-- Progress Dots -->
+  <div class="dots-container" id="dotsContainer"></div>
+
+  <script>
+    const container = document.getElementById("timeline");
+    const items = document.querySelectorAll(".timeline-item");
+    const dotsContainer = document.getElementById("dotsContainer");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+
+    let currentIndex = 0;
+    let scrollAccum = 0;
+    let isScrolling = false;
+
+    const SCROLL_THRESHOLD = 100;
+    const SCROLL_LOCK_TIME = 700;
+
+    // Create dots
+    items.forEach((_, i) => {
+      const dot = document.createElement("div");
+      dot.classList.add("dot");
+      dot.addEventListener("click", () => {
+        currentIndex = i;
+        scrollToIndex(currentIndex);
+        lockScroll();
+      });
+      dotsContainer.appendChild(dot);
+    });
+
+    const dots = document.querySelectorAll(".dot");
+
+    function scrollToIndex(index) {
+      const scrollX = index * window.innerWidth;
+      container.scrollTo({ left: scrollX, behavior: 'smooth' });
+      updateUI(index);
+    }
+
+    function updateUI(index) {
+      items.forEach((item, i) => {
+        item.classList.toggle("active", i === index);
+      });
+
+      dots.forEach((dot, i) => {
+        dot.classList.toggle("active", i === index);
+      });
+
+      prevBtn.disabled = index === 0;
+      nextBtn.disabled = index === items.length - 1;
+    }
+
+    function handleScroll(event) {
+      event.preventDefault();
+      if (isScrolling) return;
+
+      scrollAccum += event.deltaY;
+
+      if (scrollAccum > SCROLL_THRESHOLD && currentIndex < items.length - 1) {
+        currentIndex++;
+        scrollToIndex(currentIndex);
+        resetScroll();
+      } else if (scrollAccum < -SCROLL_THRESHOLD && currentIndex > 0) {
+        currentIndex--;
+        scrollToIndex(currentIndex);
+        resetScroll();
+      } else {
+        lockScroll();
+      }
+    }
+
+    function resetScroll() {
+      scrollAccum = 0;
+      lockScroll();
+    }
+
+    function lockScroll() {
+      isScrolling = true;
+      setTimeout(() => {
+        isScrolling = false;
+        scrollToIndex(currentIndex); // Snap back if needed
+      }, SCROLL_LOCK_TIME);
+    }
+
+    // Touch support
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    function handleTouchStart(e) {
+      touchStartX = e.changedTouches[0].clientX;
+    }
+
+    function handleTouchEnd(e) {
+      touchEndX = e.changedTouches[0].clientX;
+      handleSwipe();
+    }
+
+    function handleSwipe() {
+      const delta = touchStartX - touchEndX;
+      if (Math.abs(delta) < 50 || isScrolling) return;
+
+      if (delta > 0 && currentIndex < items.length - 1) {
+        currentIndex++;
+      } else if (delta < 0 && currentIndex > 0) {
+        currentIndex--;
+      }
+      scrollToIndex(currentIndex);
+      lockScroll();
+    }
+
+    // Arrow navigation
+    prevBtn.addEventListener("click", () => {
+      if (currentIndex > 0) {
+        currentIndex--;
+        scrollToIndex(currentIndex);
+        lockScroll();
+      }
+    });
+
+    nextBtn.addEventListener("click", () => {
+      if (currentIndex < items.length - 1) {
+        currentIndex++;
+        scrollToIndex(currentIndex);
+        lockScroll();
+      }
+    });
+
+    window.addEventListener("wheel", handleScroll, { passive: false });
+    window.addEventListener("touchstart", handleTouchStart, { passive: true });
+    window.addEventListener("touchend", handleTouchEnd, { passive: true });
+
+    // Init
+    scrollToIndex(currentIndex);
+  </script>
+</body>
+</html>
