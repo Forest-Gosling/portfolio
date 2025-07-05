@@ -17,8 +17,7 @@ animate();
 
 function init() {
     scene = new THREE.Scene();
-
-    scene.background = new THREE.Color(0x87ceeb); // Sky blue background
+    scene.background = new THREE.Color(0x87ceeb); // Sky blue
 
     camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.set(10, 5, 10);
@@ -36,7 +35,7 @@ function init() {
     controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
 
-    // Mobile device orientation controls
+    // Device orientation for mobile
     if (window.DeviceOrientationEvent) {
         window.addEventListener('deviceorientation', (event) => {
             if (event.alpha || event.beta || event.gamma) {
@@ -85,42 +84,23 @@ function init() {
     hoverSound.volume = 0.5;
     clickSound.volume = 0.5;
 
+    // Desktop Events
     window.addEventListener('mousemove', onMouseMove, false);
-    window.addEventListener('mousedown', onMouseDown, false);
-    window.addEventListener('mouseup', onMouseUp, false);
+    window.addEventListener('click', (event) => {
+        handleInteraction(event.clientX, event.clientY);
+    }, false);
+
+    // Mobile Events
     window.addEventListener('touchstart', onTouchStart, false);
     window.addEventListener('touchend', onTouchEnd, false);
     window.addEventListener('resize', onWindowResize, false);
 }
 
-function onMouseDown(event) {
-    startTouch = { x: event.clientX, y: event.clientY };
-}
-
-function onMouseUp(event) {
-    const dx = Math.abs(event.clientX - startTouch.x);
-    const dy = Math.abs(event.clientY - startTouch.y);
-    if (dx < clickThreshold && dy < clickThreshold) {
-        handleInteraction(event.clientX, event.clientY);
+function findInteractiveParent(object) {
+    while (object && !interactiveObjects.includes(object)) {
+        object = object.parent;
     }
-}
-
-function onTouchStart(event) {
-    if (event.touches.length === 1) {
-        const touch = event.touches[0];
-        startTouch = { x: touch.clientX, y: touch.clientY };
-    }
-}
-
-function onTouchEnd(event) {
-    if (event.changedTouches.length === 1) {
-        const touch = event.changedTouches[0];
-        const dx = Math.abs(touch.clientX - startTouch.x);
-        const dy = Math.abs(touch.clientY - startTouch.y);
-        if (dx < clickThreshold && dy < clickThreshold) {
-            handleInteraction(touch.clientX, touch.clientY);
-        }
-    }
+    return object;
 }
 
 function handleInteraction(clientX, clientY) {
@@ -128,17 +108,14 @@ function handleInteraction(clientX, clientY) {
     mouse.y = -(clientY / window.innerHeight) * 2 + 1;
 
     raycaster.setFromCamera(mouse, camera);
-    const intersects = raycaster.intersectObjects(objects, true);
+    const intersects = raycaster.intersectObjects(interactiveObjects, true);
 
     if (intersects.length > 0) {
-        const first = intersects[0].object;
-        if (interactiveObjects.includes(first)) {
-            const url = objectLinks[first.name];
-            if (url) {
-                clickSound.currentTime = 0;
-                clickSound.play();
-                setTimeout(() => window.open(url, '_blank'), 100);
-            }
+        const first = findInteractiveParent(intersects[0].object);
+        if (first && objectLinks[first.name]) {
+            clickSound.currentTime = 0;
+            clickSound.play();
+            setTimeout(() => window.open(objectLinks[first.name], '_blank'), 100);
         }
     }
 }
@@ -152,12 +129,12 @@ function onMouseMove(event) {
     tooltip.style.top = `${event.clientY + 15}px`;
 
     raycaster.setFromCamera(mouse, camera);
-    const intersects = raycaster.intersectObjects(objects, true);
+    const intersects = raycaster.intersectObjects(interactiveObjects, true);
 
     let newHovered = null;
     if (intersects.length > 0) {
-        const first = intersects[0].object;
-        if (interactiveObjects.includes(first)) {
+        const first = findInteractiveParent(intersects[0].object);
+        if (first) {
             newHovered = first;
         }
     }
@@ -194,6 +171,24 @@ function onMouseMove(event) {
             hoveredObject = null;
         }
         tooltip.style.display = "none";
+    }
+}
+
+function onTouchStart(event) {
+    if (event.touches.length === 1) {
+        const touch = event.touches[0];
+        startTouch = { x: touch.clientX, y: touch.clientY };
+    }
+}
+
+function onTouchEnd(event) {
+    if (event.changedTouches.length === 1) {
+        const touch = event.changedTouches[0];
+        const dx = Math.abs(touch.clientX - startTouch.x);
+        const dy = Math.abs(touch.clientY - startTouch.y);
+        if (dx < clickThreshold && dy < clickThreshold) {
+            handleInteraction(touch.clientX, touch.clientY);
+        }
     }
 }
 

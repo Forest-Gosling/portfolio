@@ -1,134 +1,162 @@
 <!DOCTYPE html>
-<html lang="">
+<html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>About</title>
-    <link rel="icon" type="image/x-icon" href="/media/favicon/win_xp_favicon.ico">
-    <link rel="stylesheet" href="style.css">
-
-    <nav id="personalstatement">
-        <a href="index.html" class="topnavlink">Home</a>
-        <a href="about.html" class="topnavlink">About</a>
-        <a href="server_rack.html" class="topnavlink">Homelab</a>
-        <a href="hardwaremods.html" class="topnavlink">Hardware Mods</a>
-        <a href="coding.html" class="topnavlink">Coding</a>
-        <a href="contact.html" class="topnavlink">Socials</a>
-    </nav>
-
+    <link rel="icon" href="/media/favicon/win_xp_favicon.ico" />
+    <link id="theme-style" rel="stylesheet" href="winxp.css" />
 </head>
 
 <body>
+    <div class="window">
+        <div class="title-bar">
+            <div class="title-text">About</div>
+            <div class="title-buttons">
+                <button class="title-btn minimize-btn" aria-label="Minimize"></button>
+                <button class="title-btn maximize-btn" aria-label="Maximize"></button>
+                <button class="title-btn close-btn" aria-label="Close"></button>
+            </div>
+        </div>
 
-    <div class="sidenav">
-        <a href="#personalstatement">About</a>
-        <a href="#interests">Interests</a>
-        <a href="#playlists">Playlists</a>
-        <a href="#Biking">Biking</a>
-        <a href="#dogs">Dogs</a>
+        <nav class="topnav">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="server_rack.html">Homelab</a>
+            <a href="hardwaremods.html">Hardware Mods</a>
+            <a href="coding.html">Coding</a>
+            <a href="contact.html">Socials</a>
+
+            <select class="right-select" id="style-switcher">
+            <option value="win95.css">Windows 95</option>
+            <option value="winxp.css" selected>Windows XP</option>
+            <option value="style3.css">Style 3</option>
+            <option value="style4.css">Style 4</option>
+            <option value="style5.css">Style 5</option>
+            </select>
+        </nav>
+
+        <div class="body-area">
+            <aside class="sidenav">
+                <a href="#about">About</a>
+                <a href="#interests">Interests</a>
+                <a href="#playlists">Playlists</a>
+                <a href="#biking">Biking</a>
+                <a href="#dogs">Dogs</a>
+            </aside>
+
+            <main class="mainwside">
+                <section class="contentboxed" id="about">
+                    <h2>About Me</h2>
+                    <p>Hi, I'm Forest, a passionate tech enthusiast with a love for server hardware and networking. With a background in IT (Level 3 --- in Creative Media Practice, Leeds City College), I specialize in creating [describe your strengths: e.g.,
+                        engaging designs, innovative solutions, compelling content]. When I'm not working with computers, I'm usually building websites using HTML, CSS, and JavaScript—always looking to learn and grow. Thanks for visiting my portfolio.
+                        I’m excited to connect and explore potential projects!</p>
+
+                    <h2>Previous Experience</h2>
+                    <p>My highest qualification is a Level 3 ------ in Creative Media Practice. Most of my abilities are self-taught and fueled by a strong interest in technology. I have a deep passion for old computer hardware, especially aging server equipment,
+                        and I enjoy the challenge of bringing these systems back to life. I use them to host media servers where I store and back up personal content. Managing these systems mirrors real-world IT operations, requiring troubleshooting,
+                        uptime monitoring, and strong backup strategies. It's a rewarding combination of hands-on hardware and system management.</p>
+                </section>
+
+                <section id="playlists" class="contentboxed">
+                    <h2>Playlists</h2>
+                    <p>These are my Spotify playlists (best 21st century way to get to know someone is by the music they listen to)</p>
+
+                    <div class="playlist-container">
+                        <div class="playlist" onclick="openPlaylist('74cddqZ2ZLe4VPvbPje7t3')">
+                            <img src="media/playlists/myaura.jpg" alt="My Aura playlist cover" />
+                            <p class="title">My Aura (Personal)</p>
+                            <p class="songs">-- songs</p>
+                        </div>
+                        <div class="playlist" onclick="openPlaylist('1UH1FvvLDcV16otV9fDO0i')">
+                            <img src="media/playlists/polo.png" alt="Volkswagen Polo playlist cover" />
+                            <p class="title">Volkswagen Polo (Nostalgic Y2K)</p>
+                            <p class="songs">-- songs</p>
+                        </div>
+                        <div class="playlist" onclick="openPlaylist('0rOiZ6qQviDRqYfAZlZ1lj')">
+                            <img src="media/playlists/landrover.png" alt="Land Rover playlist cover" />
+                            <p class="title">Land Rover (Country)</p>
+                            <p class="songs">-- songs</p>
+                        </div>
+                        <div class="playlist" onclick="openPlaylist('79JlZXqEJcatGG7DvveJOG')">
+                            <img src="media/playlists/cinquecento.png" alt="Fiat Cinquecento playlist cover" />
+                            <p class="title">Fiat Cinquecento (Light)</p>
+                            <p class="songs">-- songs</p>
+                        </div>
+                        <div class="playlist" onclick="openPlaylist('7LhiJx0CZB1HBDTG6f8bZ0')">
+                            <img src="media/playlists/cavalier.png" alt="Vauxhall Cavalier playlist cover" />
+                            <p class="title">Vauxhall Cavalier (Rock + Metal)</p>
+                            <p class="songs">-- songs</p>
+                        </div>
+                        <div class="playlist" onclick="openPlaylist('577jONtiOXU0v5LPVXvg1Z')">
+                            <img src="media/playlists/plymouthfury.jpg" alt="Plymouth Fury playlist cover" />
+                            <p class="title">Plymouth Fury (Old Rap)</p>
+                            <p class="songs">-- songs</p>
+                        </div>
+                        <div class="playlist" onclick="openPlaylist('5nnVuWVnupv5YMqQTPw41W')">
+                            <img src="media/playlists/renaultscenic.png" alt="Renault Scenic playlist cover" />
+                            <p class="title">Renault Scenic (Radio)</p>
+                            <p class="songs">-- songs</p>
+                        </div>
+                        <div class="playlist" onclick="openPlaylist('2ZgLbGxBgFAqJaJFHkwX98')">
+                            <img src="media/playlists/500&panda.png" alt="Fiat 500 + Panda playlist cover" />
+                            <p class="title">Fiat 500 + Panda (Old)</p>
+                            <p class="songs">-- songs</p>
+                        </div>
+                        <div class="playlist" onclick="openPlaylist('4NwjOBfspKEZkK87ZrjWbv')">
+                            <img src="media/playlists/reliantrobin.png" alt="Reliant Robin playlist cover" />
+                            <p class="title">Reliant Robin (Pop)</p>
+                            <p class="songs">-- songs</p>
+                        </div>
+                    </div>
+
+                    <!-- Modal for Spotify Embed -->
+                    <div id="playlistModal" class="modal">
+                        <div class="modal-content">
+                            <span class="close" onclick="closeModal()">&times;</span>
+                            <iframe id="spotifyIframe" style="border-radius:12px;" width="100%" height="352" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <footer>&copy; Forest — All rights reserved</footer>
     </div>
 
-    <main class="mainwside">
-        
-        
-        
-        <section class="contentboxed">
-            <h2>About Me</h2>
-            <p>Hi, I'm Forest, a passionate tech enthusiast with a love for server hardware and networking. With a background in IT (Level 3 --- in Creative Media Practice, Leeds City College), I specialize in creating [describe what you do best: e.g., engaging designs, innovative solutions, compelling content]. When I'm not working with computers, I'm nomally working on them creating websites using HTML, CSS and Javascript, always looking for new ways to learn and grow. Thanks for visiting my portfolio. I’m excited to connect and explore potential projects!</p>
-            
-            <h2>Previous Experience</h2>
-            <p>My current highest qualification is a Level 3 ------ in Creative Media Practice, Although most of my ability is self taught and comes from my interest in technology. I have a deep passion for old computer hardware, particularly ageing server equipment, and I love the challenge of bringing these systems back to life. I take great pride in setting up and using them to host my own media servers, where I store and back up personal files, photos, and media content. Managing these servers is a rewarding experience - one that mirrors real-world IT operations, as I oversee a system that multiple people rely on daily. I’m responsible for troubleshooting and resolving issues, much like handling error tickets in a business environment, ensuring everything runs smoothly for those who depend on my setups. With a focus on data redundancy, I implement robust backup strategies to ensure that the information I manage is secure and protected against failure. This blend of hardware tinkering and system management brings together my love for technology and my problem-solving skills, and it’s something I find both exciting and fulfilling.</p>
-        </section>
-    
-        <section id="playlists">
-            <h2>Playlists</h2>
-            <p>These are my Spotify playlists (best 20th century way to get to know someone is by the music they listen to)</p>
-            <div class="playlist-container">
-                <div class="playlist" onclick="openPlaylist('74cddqZ2ZLe4VPvbPje7t3')">
-                    <img src="media/playlists/myaura.jpg" alt="My Aura (Personal)">
-                    <p class="title">My Aura (Personal)</p>
-                    <p class="songs">-- songs</p>
-                </div>
-                <div class="playlist" onclick="openPlaylist('1UH1FvvLDcV16otV9fDO0i')">
-                    <img src="media/playlists/polo.png" alt="Volkswagen Polo (Nostalgic Y2K)">
-                    <p class="title">Volkswagen Polo (Nostalgic Y2K)</p>
-                    <p class="songs">-- songs</p>
-                </div>
-                <div class="playlist" onclick="openPlaylist('0rOiZ6qQviDRqYfAZlZ1lj')">
-                    <img src="media/playlists/landrover.png" alt="Land Rover (Country)">
-                    <p class="title">Land Rover (Country)</p>
-                    <p class="songs">-- songs</p>
-                </div>
-                <div class="playlist" onclick="openPlaylist('79JlZXqEJcatGG7DvveJOG')">
-                    <img src="media/playlists/cinquecento.png" alt="Fiat Cinquechento (Light)">
-                    <p class="title">Fiat Cinquechento (Light)</p>
-                    <p class="songs">-- songs</p>
-                </div>
-                <div class="playlist" onclick="openPlaylist('7LhiJx0CZB1HBDTG6f8bZ0')">
-                    <img src="media/playlists/cavalier.png" alt="Vauxhaul Cavalier(Rock & Metal)">
-                    <p class="title">Vauxhaul Cavalier(Rock + Metal)</p>
-                    <p class="songs">-- songs</p>
-                </div>
-                <div class="playlist" onclick="openPlaylist('577jONtiOXU0v5LPVXvg1Z')">
-                    <img src="media/playlists/plymouthfury.jpg" alt="Plymouth Fury (Old Rap)">
-                    <p class="title">Plymouth Fury (Old Rap)</p>
-                    <p class="songs">-- songs</p>
-                </div>
-                <div class="playlist" onclick="openPlaylist('5nnVuWVnupv5YMqQTPw41W')">
-                    <img src="media/playlists/renaultscenic.png" alt="Renault Scenic (Radio)">
-                    <p class="title">Renault Scenic (Radio)</p>
-                    <p class="songs">-- songs</p>
-                </div>
-                <div class="playlist" onclick="openPlaylist('2ZgLbGxBgFAqJaJFHkwX98')">
-                    <img src="media/playlists/500&panda.png" alt="Fiat 500 + Panda (Old)">
-                    <p class="title">Fiat 500 + Panda (Old)</p>
-                    <p class="songs">-- songs</p>
-                </div>
-                <div class="playlist" onclick="openPlaylist('4NwjOBfspKEZkK87ZrjWbv')">
-                    <img src="media/playlists/reliantrobin.png" alt="Reliant Robin (Pop)">
-                    <p class="title">Reliant Robin (Pop)</p>
-                    <p class="songs">-- songs</p>
-                </div>
-            </div>
+    <script>
+        const themeLink = document.getElementById("theme-style");
+        const styleSwitcher = document.getElementById("style-switcher");
 
-            <!-- playlist modal -->
-            <div id="playlistModal" class="modal">
-                <div class="modal-content">
-                    <span class="close" onclick="closeModal()">&times;</span>
-                    <iframe id="spotifyIframe" style="border-radius:12px" src="" width="100%" height="352" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-                </div>
-            </div>
+        // Load saved style on page load
+        const savedStyle = localStorage.getItem("theme-css");
+        if (savedStyle) {
+            themeLink.href = savedStyle;
+            styleSwitcher.value = savedStyle;
+        }
 
-            <script>
-                function openPlaylist(playlistId) {
-                    let iframe = document.getElementById("spotifyIframe");
-                    iframe.src = `https://open.spotify.com/embed/playlist/${playlistId}?utm_source=generator`;
+        // Change stylesheet and save selection
+        styleSwitcher.addEventListener("change", function() {
+            const selectedCSS = this.value;
+            themeLink.href = selectedCSS;
+            localStorage.setItem("theme-css", selectedCSS);
+        });
 
-                    let modal = document.getElementById("playlistModal");
-                    modal.style.display = "flex";
-                }
+        function openPlaylist(playlistId) {
+            const iframe = document.getElementById("spotifyIframe");
+            iframe.src = `https://open.spotify.com/embed/playlist/${playlistId}?utm_source=generator`;
 
-                function closeModal() {
-                    let modal = document.getElementById("playlistModal");
-                    modal.style.display = "none";
-                    document.getElementById("spotifyIframe").src = ""; // Stop playback when closed
-                }
+            const modal = document.getElementById("playlistModal");
+            modal.style.display = "flex";
+        }
 
-            </script>
-
-        </section>
-        
-        </main>
-
-    <div>
-        <h1>Home</h1>
-        <p>This is a paragraph</p>
-    </div>
+        function closeModal() {
+            const modal = document.getElementById("playlistModal");
+            modal.style.display = "none";
+            document.getElementById("spotifyIframe").src = ""; // Stop playback
+        }
+    </script>
 </body>
-
-<footer>
-    <p>footer</p>
-</footer>
 
 </html>
