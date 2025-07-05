@@ -6,6 +6,8 @@ let pulseTime = 0;
 let hoverSound, clickSound;
 let deviceControlsEnabled = false;
 let deviceControls;
+let startTouch = null;
+let clickThreshold = 5;
 
 const objectLinks = {};
 const objectTooltips = {};
@@ -16,7 +18,7 @@ animate();
 function init() {
     scene = new THREE.Scene();
 
-    scene.background = new THREE.Color(0x87ceeb); // Sky blue
+    scene.background = new THREE.Color(0x87ceeb); // Sky blue background
 
     camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.set(10, 5, 10);
@@ -34,6 +36,7 @@ function init() {
     controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
 
+    // Mobile device orientation controls
     if (window.DeviceOrientationEvent) {
         window.addEventListener('deviceorientation', (event) => {
             if (event.alpha || event.beta || event.gamma) {
@@ -83,9 +86,61 @@ function init() {
     clickSound.volume = 0.5;
 
     window.addEventListener('mousemove', onMouseMove, false);
-    window.addEventListener('click', onClick, false);
-    window.addEventListener('touchstart', onTouchStart, false); // 👈 Added for mobile
+    window.addEventListener('mousedown', onMouseDown, false);
+    window.addEventListener('mouseup', onMouseUp, false);
+    window.addEventListener('touchstart', onTouchStart, false);
+    window.addEventListener('touchend', onTouchEnd, false);
     window.addEventListener('resize', onWindowResize, false);
+}
+
+function onMouseDown(event) {
+    startTouch = { x: event.clientX, y: event.clientY };
+}
+
+function onMouseUp(event) {
+    const dx = Math.abs(event.clientX - startTouch.x);
+    const dy = Math.abs(event.clientY - startTouch.y);
+    if (dx < clickThreshold && dy < clickThreshold) {
+        handleInteraction(event.clientX, event.clientY);
+    }
+}
+
+function onTouchStart(event) {
+    if (event.touches.length === 1) {
+        const touch = event.touches[0];
+        startTouch = { x: touch.clientX, y: touch.clientY };
+    }
+}
+
+function onTouchEnd(event) {
+    if (event.changedTouches.length === 1) {
+        const touch = event.changedTouches[0];
+        const dx = Math.abs(touch.clientX - startTouch.x);
+        const dy = Math.abs(touch.clientY - startTouch.y);
+        if (dx < clickThreshold && dy < clickThreshold) {
+            handleInteraction(touch.clientX, touch.clientY);
+        }
+    }
+}
+
+function handleInteraction(clientX, clientY) {
+    mouse.x = (clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(clientY / window.innerHeight) * 2 + 1;
+
+    raycaster.setFromCamera(mouse, camera);
+    const intersects = raycaster.intersectObjects(objects, true);
+
+    if (intersects.length > 0) {
+        const first = intersects[0].object;
+        if (interactiveObjects.includes(first)) {
+            const url = objectLinks[first.name];
+            if (url) {
+                clickSound.currentTime = 0;
+                clickSound.play();
+                setTimeout(() => window.open(url, '_blank'), 100);
+            }
+        }
+    }
 }
 
 function onMouseMove(event) {
@@ -139,37 +194,6 @@ function onMouseMove(event) {
             hoveredObject = null;
         }
         tooltip.style.display = "none";
-    }
-}
-
-function onClick(event) {
-    handleInteraction(event.clientX, event.clientY);
-}
-
-function onTouchStart(event) {
-    if (event.touches.length === 1) {
-        const touch = event.touches[0];
-        handleInteraction(touch.clientX, touch.clientY);
-    }
-}
-
-function handleInteraction(clientX, clientY) {
-    mouse.x = (clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(clientY / window.innerHeight) * 2 + 1;
-
-    raycaster.setFromCamera(mouse, camera);
-    const intersects = raycaster.intersectObjects(objects, true);
-
-    if (intersects.length > 0) {
-        const first = intersects[0].object;
-        if (interactiveObjects.includes(first)) {
-            const url = objectLinks[first.name];
-            if (url) {
-                clickSound.currentTime = 0;
-                clickSound.play();
-                setTimeout(() => window.open(url, '_blank'), 100);
-            }
-        }
     }
 }
 
