@@ -1,68 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <title>Forest's Portfolio</title>
+    <meta charset="UTF-8" />
+    <title>Forest's Portfolio</title>
     <link rel="icon" type="image/x-icon" href="/media/favicon/win_xp_favicon.ico">
     <link rel="stylesheet" href="style.css">
-  <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      background-color: black;
-      font-family: sans-serif;
-    }
-
-    #canvas-wrapper {
-      border: 4px solid #333;
-      border-radius: 10px;
-      background-color: #222;
-      box-shadow: 0 0 20px rgba(0, 255, 170, 0.3);
-      width: 500px;
-      height: 400px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    canvas {
-      display: block;
-    }
-
-    button {
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeInUp 1s ease-out forwards;
-      animation-delay: 2s;
-      margin-top: 20px;
-      padding: 10px 30px;
-      font-size: 1.1rem;
-      background-color: transparent;
-      color: white;
-      border: 2px solid white;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background-color 0.2s, color 0.2s;
-    }
-
-    button:hover {
-      background-color: white;
-      color: #111;
-    }
-
-    @keyframes fadeInUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-  </style>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: black;
+            font-family: sans-serif;
+        }
+        
+        #canvas-wrapper {
+            border: 4px solid #333;
+            border-radius: 10px;
+            background-color: #222;
+            box-shadow: 0 0 20px rgba(0, 255, 170, 0.3);
+            width: 500px;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        canvas {
+            display: block;
+        }
+        
+        button {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 1s ease-out forwards;
+            animation-delay: 2s;
+            margin-top: 20px;
+            padding: 10px 30px;
+            font-size: 1.1rem;
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        
+        button:hover {
+            background-color: white;
+            color: #111;
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
+
 <body>
     <h1>Please Note This is a Work in Progress and Updates Are Weekly.</h1>
     <p>Thank You For Your Patience</p>
@@ -72,96 +74,100 @@
         <div id="canvas-container"></div>
     </div>
 
-  <button onclick="location.href='room.html'">Click Here! To Enter My Room</button>
+    <button onclick="location.href='room.html'">Click Here! To Enter My Room</button>
 
-  <!-- Sound -->
-  <audio id="click-sound" src="/media/sounds/squish.mp3" preload="auto"></audio>
+    <!-- Sound -->
+    <audio id="click-sound" src="/media/sounds/squish.mp3" preload="auto"></audio>
 
-  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three/examples/js/loaders/GLTFLoader.js"></script>
-  <script>
-    const scene = new THREE.Scene();
-    const container = document.getElementById('canvas-container');
-    const width = 500;
-    const height = 400;
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three/examples/js/loaders/GLTFLoader.js"></script>
+    <script>
+        const scene = new THREE.Scene();
+        const container = document.getElementById('canvas-container');
+        const width = 500;
+        const height = 400;
 
-    const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
-    camera.position.z = 9;
+        const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+        camera.position.z = 9;
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(width, height);
-    container.appendChild(renderer.domElement);
+        const renderer = new THREE.WebGLRenderer({
+            antialias: true,
+            alpha: true
+        });
+        renderer.setSize(width, height);
+        container.appendChild(renderer.domElement);
 
-    // Load the GLTF model (oldpc.gltf)
-    const loader = new THREE.GLTFLoader();
-    let model;
+        // Load the GLTF model (oldpc.gltf)
+        const loader = new THREE.GLTFLoader();
+        let model;
 
-    loader.load('/media/models/oldpc/oldpc.glb', (gltf) => {
-      model = gltf.scene;
-      model.scale.set(1.5, 1.5, 1.5); // Adjust model size
-      scene.add(model);
-    }, undefined, (error) => {
-      console.error('Error loading the model:', error);
-    });
+        loader.load('/media/models/oldpc/oldpc.glb', (gltf) => {
+            model = gltf.scene;
+            model.scale.set(1.5, 1.5, 1.5); // Adjust model size
+            scene.add(model);
+        }, undefined, (error) => {
+            console.error('Error loading the model:', error);
+        });
 
-    // Lighting
-    scene.add(new THREE.AmbientLight(0xffffff, 0.5));
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-    directionalLight.position.set(3, 4, 5);
-    scene.add(directionalLight);
+        // Lighting
+        scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+        directionalLight.position.set(3, 4, 5);
+        scene.add(directionalLight);
 
-    // Raycaster for click detection
-    const raycaster = new THREE.Raycaster();
-    const pointer = new THREE.Vector2();
+        // Raycaster for click detection
+        const raycaster = new THREE.Raycaster();
+        const pointer = new THREE.Vector2();
 
-    let isJumping = false;
-    let jumpTime = 0;
+        let isJumping = false;
+        let jumpTime = 0;
 
-    const clickSound = document.getElementById('click-sound');
+        const clickSound = document.getElementById('click-sound');
 
-    // Detect click on model
-    renderer.domElement.addEventListener('pointerdown', (event) => {
-      const rect = renderer.domElement.getBoundingClientRect();
-      pointer.x = ((event.clientX - rect.left) / width) * 2 - 1;
-      pointer.y = -((event.clientY - rect.top) / height) * 2 + 1;
+        // Detect click on model
+        renderer.domElement.addEventListener('pointerdown', (event) => {
+            const rect = renderer.domElement.getBoundingClientRect();
+            pointer.x = ((event.clientX - rect.left) / width) * 2 - 1;
+            pointer.y = -((event.clientY - rect.top) / height) * 2 + 1;
 
-      raycaster.setFromCamera(pointer, camera);
-      const intersects = raycaster.intersectObject(model);
+            raycaster.setFromCamera(pointer, camera);
+            const intersects = raycaster.intersectObject(model);
 
-      if (intersects.length > 0 && !isJumping) {
-        isJumping = true;
-        jumpTime = 0;
-        clickSound.currentTime = 0;
-        clickSound.play();
-      }
-    });
+            if (intersects.length > 0 && !isJumping) {
+                isJumping = true;
+                jumpTime = 0;
+                clickSound.currentTime = 0;
+                clickSound.play();
+            }
+        });
 
-    // Animate the scene
-    function animate() {
-      requestAnimationFrame(animate);
+        // Animate the scene
+        function animate() {
+            requestAnimationFrame(animate);
 
-      if (model) {
-        model.rotation.y += 0.01;
-      }
+            if (model) {
+                model.rotation.y += 0.01;
+            }
 
-      if (isJumping) {
-        jumpTime += 0.05;
-        if (model) {
-          model.position.y = Math.sin(jumpTime * Math.PI) * 1;
-          model.rotation.x += 0.2;
-          model.rotation.y += 0.2;
+            if (isJumping) {
+                jumpTime += 0.05;
+                if (model) {
+                    model.position.y = Math.sin(jumpTime * Math.PI) * 1;
+                    model.rotation.x += 0.2;
+                    model.rotation.y += 0.2;
+                }
+
+                if (jumpTime >= 1) {
+                    isJumping = false;
+                    if (model) model.position.y = 0;
+                }
+            }
+
+            renderer.render(scene, camera);
         }
 
-        if (jumpTime >= 1) {
-          isJumping = false;
-          if (model) model.position.y = 0;
-        }
-      }
-
-      renderer.render(scene, camera);
-    }
-
-    animate();
-  </script>
+        animate();
+    </script>
 </body>
+
 </html>

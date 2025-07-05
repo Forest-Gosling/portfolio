@@ -1,8 +1,11 @@
 let scene, camera, renderer, raycaster, mouse, controls;
-let objects = [], interactiveObjects = [];
+let objects = [],
+    interactiveObjects = [];
 let hoveredObject = null;
 let pulseTime = 0;
 let hoverSound, clickSound;
+let deviceControlsEnabled = false;
+let deviceControls;
 
 const objectLinks = {};
 const objectTooltips = {};
@@ -13,9 +16,11 @@ animate();
 function init() {
     scene = new THREE.Scene();
 
+    // Sky background color
+    scene.background = new THREE.Color(0x87ceeb); // Light blue sky
+
     camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(0, 5, 10 );
-    camera.position.x += 10;
+    camera.position.set(10, 5, 10);
     scene.add(camera);
 
     renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('three-canvas'), antialias: true });
@@ -30,12 +35,21 @@ function init() {
     controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
 
+    // Enable mobile device orientation controls
+    if (window.DeviceOrientationEvent) {
+        window.addEventListener('deviceorientation', (event) => {
+            if (event.alpha || event.beta || event.gamma) {
+                deviceControls = new THREE.DeviceOrientationControls(camera);
+                deviceControlsEnabled = true;
+            }
+        }, { once: true });
+    }
+
     raycaster = new THREE.Raycaster();
     mouse = new THREE.Vector2();
 
-    // Load model
     const loader = new THREE.GLTFLoader();
-    loader.load('/media/models/room/room.glb', function (gltf) {
+    loader.load('/media/models/room/room.glb', function(gltf) {
         scene.add(gltf.scene);
         gltf.scene.traverse((child) => {
             if (child.isMesh) {
@@ -43,94 +57,23 @@ function init() {
                 child.userData.originalEmissive = child.material.emissive.clone();
                 objects.push(child);
 
-                // Server Rack setup
-                if (child.name === "Server_Rack") {
-                    interactiveObjects.push(child);
-                    objectLinks[child.name] = "coming_soon.html";
-                    objectTooltips[child.name] = {
-                        title: "Server Rack",
-                        description: "Watch This Space.",
-                    };
-                }
+                const name = child.name;
+                const tooltip = {
+                    "Server_Rack": { title: "Server Rack", description: "Watch This Space." },
+                    "Photo": { title: "About Me", description: "Watch This Space." },
+                    "Guitar": { title: "Guitar", description: "Watch This Space." },
+                    "Soldering_Iron": { title: "Soldering Iron", description: "Watch This Space." },
+                    "Computer": { title: "PC", description: "Watch This Space." },
+                    "Monitor_1": { title: "Monitor_1", description: "Watch This Space." },
+                    "Monitor_2": { title: "Monitor_2", description: "Watch This Space." },
+                    "Monitor_3": { title: "Monitor_3", description: "Watch This Space." },
+                    "Coming_soon": { title: "Coming Soon", description: "Watch This Space." }
+                };
 
-                // Photo setup
-                if (child.name === "Photo") {
+                if (tooltip[name]) {
                     interactiveObjects.push(child);
-                    objectLinks[child.name] = "coming_soon.html";
-                    objectTooltips[child.name] = {
-                        title: "About Me",
-                        description: "Watch This Space.",
-                    };
-                }
-
-                // Guitar setup
-                if (child.name === "Guitar") {
-                    interactiveObjects.push(child);
-                    objectLinks[child.name] = "coming_soon.html";  // Link to a new page
-                    objectTooltips[child.name] = {
-                        title: "Guitar",
-                        description: "Watch This Space.",
-                    };
-                }
-
-                // Soldering Iron setup
-                if (child.name === "Soldering_Iron") {
-                    interactiveObjects.push(child);
-                    objectLinks[child.name] = "coming_soon.html";  // Link to a new page
-                    objectTooltips[child.name] = {
-                        title: "Soldering Iron",
-                        description: "Watch This Space.",
-                    };
-                }
-
-                // Computer setup
-                if (child.name === "Computer") {
-                    interactiveObjects.push(child);
-                    objectLinks[child.name] = "coming_soon.html";  // Link to a new page
-                    objectTooltips[child.name] = {
-                        title: "PC",
-                        description: "Watch This Space.",
-                    };
-                }
-                
-                // Monitor 1 setup
-                if (child.name === "Monitor_1") {
-                    interactiveObjects.push(child);
-                    objectLinks[child.name] = "coming_soon.html";  // Link to a new page
-                    objectTooltips[child.name] = {
-                        title: "Monitor_1",
-                        description: "Watch This Space.",
-                    };
-                }
-
-                // Monitor 2 setup
-                if (child.name === "Monitor_2") {
-                    interactiveObjects.push(child);
-                    objectLinks[child.name] = "coming_soon.html";  // Link to a new page
-                    objectTooltips[child.name] = {
-                        title: "Monitor_2",
-                        description: "Watch This Space.",
-                    };
-                }
-
-                // Monitor 3 setup
-                if (child.name === "Monitor_3") {
-                    interactiveObjects.push(child);
-                    objectLinks[child.name] = "coming_soon.html";  // Link to a new page
-                    objectTooltips[child.name] = {
-                        title: "Monitor_3",
-                        description: "Watch This Space.",
-                    };
-                }
-
-                // Template setup
-                if (child.name === "Coming_soon") {
-                    interactiveObjects.push(child);
-                    objectLinks[child.name] = "coming_soon.html";  // Link to a new page
-                    objectTooltips[child.name] = {
-                        title: "Coming Soon",
-                        description: "Watch This Space.",
-                    };
+                    objectLinks[name] = "coming_soon.html";
+                    objectTooltips[name] = tooltip[name];
                 }
             }
         });
@@ -228,7 +171,12 @@ function onWindowResize() {
 
 function animate() {
     requestAnimationFrame(animate);
-    controls.update();
+
+    if (deviceControlsEnabled && deviceControls) {
+        deviceControls.update();
+    } else {
+        controls.update();
+    }
 
     if (hoveredObject) {
         pulseTime += 0.005;
