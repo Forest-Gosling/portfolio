@@ -16,8 +16,7 @@ animate();
 function init() {
     scene = new THREE.Scene();
 
-    // Sky background color
-    scene.background = new THREE.Color(0x87ceeb); // Light blue sky
+    scene.background = new THREE.Color(0x87ceeb); // Sky blue
 
     camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.set(10, 5, 10);
@@ -35,7 +34,6 @@ function init() {
     controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
 
-    // Enable mobile device orientation controls
     if (window.DeviceOrientationEvent) {
         window.addEventListener('deviceorientation', (event) => {
             if (event.alpha || event.beta || event.gamma) {
@@ -86,6 +84,7 @@ function init() {
 
     window.addEventListener('mousemove', onMouseMove, false);
     window.addEventListener('click', onClick, false);
+    window.addEventListener('touchstart', onTouchStart, false); // 👈 Added for mobile
     window.addEventListener('resize', onWindowResize, false);
 }
 
@@ -144,8 +143,19 @@ function onMouseMove(event) {
 }
 
 function onClick(event) {
-    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    handleInteraction(event.clientX, event.clientY);
+}
+
+function onTouchStart(event) {
+    if (event.touches.length === 1) {
+        const touch = event.touches[0];
+        handleInteraction(touch.clientX, touch.clientY);
+    }
+}
+
+function handleInteraction(clientX, clientY) {
+    mouse.x = (clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(clientY / window.innerHeight) * 2 + 1;
 
     raycaster.setFromCamera(mouse, camera);
     const intersects = raycaster.intersectObjects(objects, true);
