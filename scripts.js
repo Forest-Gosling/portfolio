@@ -72,7 +72,18 @@ function init() {
 
                 if (tooltip[name]) {
                     interactiveObjects.push(child);
-                    objectLinks[name] = "coming_soon.html";
+                    const links = {
+                        "Server_Rack": "comingsoon.html",
+                        "Photo": "aboutme.html",
+                        "Guitar": "comingsoon.html",
+                        "Soldering_Iron": "comingsoon.html",
+                        "Computer": "comingsoon.html",
+                        "Monitor_1": "comingsoon.html",
+                        "Monitor_2": "comingsoon.html",
+                        "Monitor_3": "comingsoon.html",
+                        "Coming_soon": "comingsoon.html"
+                    };
+                    objectLinks[name] = links[name];
                     objectTooltips[name] = tooltip[name];
                 }
             }
