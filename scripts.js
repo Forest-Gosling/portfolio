@@ -1,5 +1,6 @@
 let scene, camera, renderer, raycaster, mouse, controls;
-let objects = [], interactiveObjects = [];
+let objects = [],
+    interactiveObjects = [];
 let hoveredObject = null;
 let pulseTime = 0;
 let hoverSound, clickSound;
@@ -57,29 +58,29 @@ function init() {
 
                 const name = child.name;
                 const tooltip = {
-                    "Server_Rack": { title: "Server Rack", description: "Watch This Space." },
-                    "Photo": { title: "About Me", description: "Watch This Space." },
-                    "Guitar": { title: "Guitar", description: "Watch This Space." },
-                    "Soldering_Iron": { title: "Soldering Iron", description: "Watch This Space." },
-                    "Computer": { title: "PC", description: "Watch This Space." },
-                    "Monitor_1": { title: "Monitor_1", description: "Watch This Space." },
-                    "Monitor_2": { title: "Monitor_2", description: "Watch This Space." },
-                    "Monitor_3": { title: "Monitor_3", description: "Watch This Space." },
-                    "Coming_soon": { title: "Coming Soon", description: "Watch This Space." }
+                    "server_rack": { title: "Server Rack", description: "Watch This Space." },
+                    "photo": { title: "About Me", description: "Watch This Space." },
+                    "guitar": { title: "Guitar", description: "Watch This Space." },
+                    "soldering_iron": { title: "Soldering Iron", description: "Watch This Space." },
+                    "computer": { title: "PC", description: "Watch This Space." },
+                    "monitor_1": { title: "Monitor_1", description: "Watch This Space." },
+                    "monitor_2": { title: "Monitor_2", description: "Watch This Space." },
+                    "monitor_3": { title: "Monitor_3", description: "Watch This Space." },
+                    "coming_soon": { title: "Coming Soon", description: "Watch This Space." }
                 };
 
                 if (tooltip[name]) {
                     interactiveObjects.push(child);
                     const links = {
-                        "Server_Rack": "comingsoon.html",
-                        "Photo": "aboutme.html",
-                        "Guitar": "comingsoon.html",
-                        "Soldering_Iron": "comingsoon.html",
-                        "Computer": "comingsoon.html",
-                        "Monitor_1": "comingsoon.html",
-                        "Monitor_2": "comingsoon.html",
-                        "Monitor_3": "", // Local Snake game instead
-                        "Coming_soon": "comingsoon.html"
+                        "server_rack": "comingsoon.html",
+                        "photo": "aboutme.html",
+                        "guitar": "comingsoon.html",
+                        "soldering_iron": "comingsoon.html",
+                        "computer": "comingsoon.html",
+                        "monitor_1": "comingsoon.html",
+                        "monitor_2": "comingsoon.html",
+                        "monitor_3": "", // Local Snake game instead
+                        "coming_soon": "comingsoon.html"
                     };
                     objectLinks[name] = links[name];
                     objectTooltips[name] = tooltip[name];
@@ -304,4 +305,3 @@ function startSnakeGame() {
     draw(); // draw initial state
     setTimeout(gameLoop, 300); // Delay to prevent immediate collision
 }
-
