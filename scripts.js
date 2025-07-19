@@ -124,7 +124,7 @@ function handleInteraction(clientX, clientY) {
             clickSound.currentTime = 0;
             clickSound.play();
 
-            if (first.name === "Monitor_3") {
+            if (first.name === "monitor_3") {
                 document.getElementById("gameboy-modal").style.display = "flex";
                 startSnakeGame();
             } else if (objectLinks[first.name]) {
