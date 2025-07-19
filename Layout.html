@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>About</title>
+    <link rel="icon" href="/media/favicon/win_xp_favicon.ico" />
+    <link id="theme-style" rel="stylesheet" href="/css/winxp.css" />
+</head>
+
+<body>
+    <div class="window">
+        <div class="title-bar">
+            <div class="title-text">About</div>
+            <div class="title-buttons">
+                <button class="title-btn minimize-btn" aria-label="Minimize"></button>
+                <button class="title-btn maximize-btn" aria-label="Maximize"></button>
+                <button class="title-btn close-btn" aria-label="Close"></button>
+            </div>
+        </div>
+
+        <nav class="topnav">
+            <a href="room.html">Home</a>
+            <a href="aboutme.html">About</a>
+            <a href="serverrack.html">Homelab</a>
+            <a href="hardwaremods.html">Hardware Mods</a>
+            <a href="coding.html">Coding</a>
+            <a href="contact.html">Socials</a>
+
+            <select class="right-select" id="style-switcher">
+            <option value="/css/win95.css">Windows 95</option>
+            <option value="/css/winxp.css" selected>Windows XP</option>
+            <option value="/css/win7.css">Windows 7</option>
+            <option value="/css/win10.css">Windows 10</option>
+            <option value="/css/macosx.css">Mac OS X</option>
+            <option value="/css/macoscatalina.css">Mac OS Catalina</option>
+            <option value="/css/style5.css">Style</option>
+            <option value="/css/style5.css">Style</option>
+            </select>
+        </nav>
+
+        <div class="body-area">
+            <div id="page-content"></div>
+        </div>
+
+        <footer>Forest Gosling 3D Room Portfolio</footer>
+    </div>
+
+    <script>
+        const themeLink = document.getElementById("theme-style");
+        const styleSwitcher = document.getElementById("style-switcher");
+
+        // Load saved style on page load
+        const savedStyle = localStorage.getItem("theme-css");
+        if (savedStyle) {
+            themeLink.href = savedStyle;
+            styleSwitcher.value = savedStyle;
+        }
+
+        // Change stylesheet and save selection
+        styleSwitcher.addEventListener("change", function() {
+            const selectedCSS = this.value;
+            themeLink.href = selectedCSS;
+            localStorage.setItem("theme-css", selectedCSS);
+        });
+    </script>
+</body>
+
+</html>

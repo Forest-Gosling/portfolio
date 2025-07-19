@@ -1,6 +1,5 @@
 let scene, camera, renderer, raycaster, mouse, controls;
-let objects = [],
-    interactiveObjects = [];
+let objects = [], interactiveObjects = [];
 let hoveredObject = null;
 let pulseTime = 0;
 let hoverSound, clickSound;
@@ -17,7 +16,7 @@ animate();
 
 function init() {
     scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x87ceeb); // Sky blue
+    scene.background = new THREE.Color(0x87ceeb);
 
     camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.set(10, 5, 10);
@@ -35,7 +34,6 @@ function init() {
     controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
 
-    // Device orientation for mobile
     if (window.DeviceOrientationEvent) {
         window.addEventListener('deviceorientation', (event) => {
             if (event.alpha || event.beta || event.gamma) {
@@ -80,7 +78,7 @@ function init() {
                         "Computer": "comingsoon.html",
                         "Monitor_1": "comingsoon.html",
                         "Monitor_2": "comingsoon.html",
-                        "Monitor_3": "comingsoon.html",
+                        "Monitor_3": "", // Local Snake game instead
                         "Coming_soon": "comingsoon.html"
                     };
                     objectLinks[name] = links[name];
@@ -95,13 +93,11 @@ function init() {
     hoverSound.volume = 0.5;
     clickSound.volume = 0.5;
 
-    // Desktop Events
     window.addEventListener('mousemove', onMouseMove, false);
     window.addEventListener('click', (event) => {
         handleInteraction(event.clientX, event.clientY);
     }, false);
 
-    // Mobile Events
     window.addEventListener('touchstart', onTouchStart, false);
     window.addEventListener('touchend', onTouchEnd, false);
     window.addEventListener('resize', onWindowResize, false);
@@ -123,10 +119,16 @@ function handleInteraction(clientX, clientY) {
 
     if (intersects.length > 0) {
         const first = findInteractiveParent(intersects[0].object);
-        if (first && objectLinks[first.name]) {
+        if (first) {
             clickSound.currentTime = 0;
             clickSound.play();
-            setTimeout(() => window.open(objectLinks[first.name], '_blank'), 100);
+
+            if (first.name === "Monitor_3") {
+                document.getElementById("gameboy-modal").style.display = "flex";
+                startSnakeGame();
+            } else if (objectLinks[first.name]) {
+                setTimeout(() => window.open(objectLinks[first.name], '_blank'), 100);
+            }
         }
     }
 }
@@ -226,3 +228,80 @@ function animate() {
 
     renderer.render(scene, camera);
 }
+
+// Gameboy Modal Controls + Snake
+function closeGameboyModal() {
+    document.getElementById("gameboy-modal").style.display = "none";
+    cancelAnimationFrame(snake.animationId);
+}
+
+function startSnakeGame() {
+    const canvas = document.getElementById("snake-canvas");
+    const ctx = canvas.getContext("2d");
+
+    const gridSize = 20;
+    let snake = [{ x: 5, y: 5 }];
+    let dx = 1, dy = 0;
+    let food = { x: 10, y: 10 };
+    let running = true;
+
+    function draw() {
+        ctx.fillStyle = "#7ac143";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = "black";
+        snake.forEach(part => {
+            ctx.fillRect(part.x * gridSize, part.y * gridSize, gridSize, gridSize);
+        });
+
+        ctx.fillStyle = "red";
+        ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize, gridSize);
+    }
+
+    function move() {
+        const head = { x: snake[0].x + dx, y: snake[0].y + dy };
+
+        const collision = (
+            head.x < 0 || head.y < 0 ||
+            head.x >= canvas.width / gridSize ||
+            head.y >= canvas.height / gridSize ||
+            snake.some(p => p.x === head.x && p.y === head.y)
+        );
+
+        if (collision) {
+            running = false;
+            return closeGameboyModal();
+        }
+
+        snake.unshift(head);
+
+        if (head.x === food.x && head.y === food.y) {
+            food = {
+                x: Math.floor(Math.random() * (canvas.width / gridSize)),
+                y: Math.floor(Math.random() * (canvas.height / gridSize))
+            };
+        } else {
+            snake.pop();
+        }
+    }
+
+    function gameLoop() {
+        if (!running) return;
+        move();
+        draw();
+        snake.animationId = requestAnimationFrame(gameLoop);
+    }
+
+    document.onkeydown = (e) => {
+        switch (e.key) {
+            case "ArrowUp": if (dy === 0) { dx = 0; dy = -1; } break;
+            case "ArrowDown": if (dy === 0) { dx = 0; dy = 1; } break;
+            case "ArrowLeft": if (dx === 0) { dx = -1; dy = 0; } break;
+            case "ArrowRight": if (dx === 0) { dx = 1; dy = 0; } break;
+        }
+    };
+
+    draw(); // draw initial state
+    setTimeout(gameLoop, 300); // Delay to prevent immediate collision
+}
+

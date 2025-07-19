@@ -2,38 +2,67 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forest's Room</title>
-    <link rel="icon" type="image/x-icon" href="/media/favicon/win_xp_favicon.ico">
-    <link rel="stylesheet" href="roomstyle.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Forest's Room</title>
+  <link rel="icon" type="image/x-icon" href="/media/favicon/win_xp_favicon.ico" />
+  <link rel="stylesheet" href="roomstyle.css" />
+  <script src="snake.js" defer></script>
 </head>
 
 <body>
-    <canvas id="three-canvas"></canvas>
-    <div id="tooltip"></div>
-    <audio id="hover-sound" src="hover.mp3" preload="auto"></audio>
-    <audio id="click-sound" src="click.mp3" preload="auto"></audio>
+  <canvas id="three-canvas"></canvas>
+  <div id="tooltip"></div>
+  <audio id="hover-sound" src="hover.mp3" preload="auto"></audio>
+  <audio id="click-sound" src="click.mp3" preload="auto"></audio>
 
-    <!-- Text Around Edges -->
-    <div id="top-text" class="overlay-text">Welcome to My Portfolio</div>
-    <!--<div id="left-text" class="overlay-text">left</div>-->
-    <!--<div id="right-text" class="overlay-text">right</div>-->
+  <!-- Snake Game Sound Effects -->
+  <audio id="snake-boot" src="media/sounds/gameboy_boot.mp3" preload="auto"></audio>
+  <audio id="snake-eat" src="media/sounds/eat.mp3" preload="auto"></audio>
+  <audio id="snake-move" src="media/sounds/move.mp3" preload="auto"></audio>
+  <audio id="snake-death" src="media/sounds/gameover.mp3" preload="auto"></audio>
 
-    <!-- Three.js Library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <div id="top-text" class="overlay-text">Welcome to My Portfolio</div>
 
-    <!-- GLTFLoader for loading GLB models -->
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+  <!-- Gameboy Modal -->
+  <div id="gameboy-modal" class="modal">
+    <button class="close-btn" onclick="closeGameboyModal()">X</button>
+    <div class="gameboy">
+      <div class="label">Nintendo<br><span>GAME BOY</span></div>
 
-    <!-- OrbitControls for camera movement -->
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+      <div class="screen">
+        <canvas id="snake-canvas" width="260" height="260"></canvas>
+        <div class="scanlines"></div>
+        <div id="score">Score: 0</div>
+      </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+      <div class="controls-guide">
+        <strong>Controls:</strong> Arrow Keys or Touch
+      </div>
 
-    <!-- External Script -->
-    <script src="scripts.js"></script>
-    <div id="label"></div>
+      <div class="controls">
+        <div class="dpad">
+          <button class="d-btn" data-dir="up">▲</button>
+          <div class="mid-row">
+            <button class="d-btn" data-dir="left">◄</button>
+            <button class="d-btn" data-dir="down">▼</button>
+            <button class="d-btn" data-dir="right">►</button>
+          </div>
+        </div>
+        <div class="ab-buttons">
+          <button class="a-btn">A</button>
+          <button class="b-btn">B</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="scripts.js"></script>
+  <div id="label"></div>
 </body>
 
 </html>
